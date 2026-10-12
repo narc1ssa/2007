@@ -392,7 +392,14 @@ button { font-family: inherit; }
   mix-blend-mode: overlay;
 }
 
-.stage__inner { position: absolute; inset: 0; touch-action: none; }
+.stage__inner {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
 
 .board {
   position: absolute;
