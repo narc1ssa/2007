@@ -1,0 +1,5 @@
+node_modules/
+checks/
+preview/
+*.log
+.DS_Store

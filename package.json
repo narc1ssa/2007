@@ -1,0 +1,14 @@
+{
+  "name": "puzzle-2007",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Пазл-игра «2007»: собираешь кадры зимы 2007 года — открываются их аниме-версии",
+  "scripts": {
+    "start": "python3 -m http.server 8080 --bind 0.0.0.0",
+    "assets": "bash tools/build-assets.sh",
+    "check:geometry": "node tools/geometry-check.mjs",
+    "test": "node tools/smoke-test.mjs",
+    "check:layout": "node tools/layout-check.mjs"
+  }
+}

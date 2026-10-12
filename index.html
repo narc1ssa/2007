@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ПАЗЛ 2007 — собери кадр</title>
+<meta name="description" content="Пазл-игра: собираешь фотографию по кусочкам — открывается её аниме-версия. Одиннадцать кадров зимы 2007 года.">
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f1220'/%3E%3Cpath d='M8 8h6v1a3 3 0 1 0 4 0V8h6v6h-1a3 3 0 1 0 0 4h1v6h-6v-1a3 3 0 1 0-4 0v1H8v-6h1a3 3 0 1 0 0-4H8z' fill='%237fd7ff'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<div class="desktop">
+  <div class="win" id="win">
+    <div class="win__bar">
+      <div class="win__title"><span class="win__icon" aria-hidden="true">🧩</span> Пазл&nbsp;<b>2007</b>&nbsp;— «собери кадр»</div>
+      <div class="win__buttons" aria-hidden="true"><i>—</i><i>□</i><i>✕</i></div>
+    </div>
+
+    <div class="win__body" id="win-body">
+
+      <!-- ================= МЕНЮ ================= -->
+      <section class="screen is-active" id="screen-menu">
+        <div class="menu">
+          <header class="menu__hero">
+            <h1 class="logo">ПАЗЛ <em>2007</em></h1>
+            <p class="tagline">
+              Одиннадцать кадров той зимы. Каждый кадр рассыпался на кусочки —
+              собери его обратно, и увидишь, как он выглядит на самом деле.
+            </p>
+            <div class="menu__actions">
+              <button class="btn btn--primary" id="btn-continue">Играть</button>
+              <button class="btn" id="btn-help">Как играть</button>
+              <button class="btn btn--ghost" id="btn-gallery">Галерея</button>
+              <button class="btn btn--ghost" id="btn-reset">Сбросить прогресс</button>
+            </div>
+            <div class="menu__progress">
+              <div class="bar bar--menu"><span id="menu-bar"></span></div>
+              <span class="menu__progress-text" id="menu-progress-text">собрано 0 из 11</span>
+            </div>
+          </header>
+
+          <div class="grid" id="level-grid" aria-label="Уровни"></div>
+        </div>
+      </section>
+
+      <!-- ================= ИГРА ================= -->
+      <section class="screen screen--play" id="screen-play">
+        <div class="play__bar">
+          <button class="btn btn--ghost btn--icon" id="play-back" title="К уровням (Esc)">←&nbsp;Уровни</button>
+          <div class="play__meta">
+            <div class="play__line">
+              <span class="play__num" id="play-num">Кадр 01</span>
+              <span class="play__caption" id="play-caption"></span>
+            </div>
+            <div class="bar"><span id="play-bar"></span></div>
+          </div>
+          <div class="play__counter"><b id="play-placed">0</b><span id="play-total">/12</span></div>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="stage__inner" id="stage-inner">
+            <div class="board" id="board">
+              <svg class="board__slots" id="board-slots" aria-hidden="true"></svg>
+              <img class="board__ghost" id="board-ghost" alt="" hidden>
+              <img class="board__peek" id="board-peek" alt="" hidden>
+              <img class="board__solved" id="board-solved" alt="" hidden>
+              <div class="board__sweep" id="board-sweep"></div>
+            </div>
+            <div class="pieces" id="pieces"></div>
+          </div>
+        </div>
+
+        <div class="play__tools">
+          <button class="btn btn--tool" id="tool-shuffle"><span aria-hidden="true">🔀</span> Перемешать</button>
+          <button class="btn btn--tool" id="tool-hint"><span aria-hidden="true">👁</span> Подсказка <b id="hint-count">3</b></button>
+          <button class="btn btn--tool" id="tool-peek"><span aria-hidden="true">✨</span> Показать кадр</button>
+          <button class="btn btn--tool" id="tool-restart"><span aria-hidden="true">↺</span> Заново</button>
+        </div>
+      </section>
+
+      <!-- ================= ГАЛЕРЕЯ ================= -->
+      <section class="screen screen--gallery" id="screen-gallery">
+        <div class="gallery__bar">
+          <button class="btn btn--ghost btn--icon" id="gallery-back">←&nbsp;Меню</button>
+          <h2 class="gallery__title">Собранные кадры</h2>
+          <span class="gallery__count" id="gallery-count">0 / 11</span>
+        </div>
+        <div class="grid grid--gallery" id="gallery-grid"></div>
+      </section>
+
+    </div>
+
+    <div class="taskbar">
+      <button class="taskbar__start" id="taskbar-start"><span aria-hidden="true">🪟</span> Пуск</button>
+      <button class="taskbar__task" id="taskbar-task">🧩 Пазл 2007</button>
+      <div class="taskbar__tray">
+        <button class="taskbar__tray-btn" id="btn-sound" title="Звук">🔊</button>
+        <span class="taskbar__clock" id="taskbar-clock">--:--</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ОКНО-ПОБЕДА ================= -->
+<div class="reveal" id="reveal" hidden>
+  <div class="reveal__card" role="dialog" aria-modal="true" aria-labelledby="reveal-title">
+    <div class="reveal__head">
+      <span class="reveal__badge">Кадр собран</span>
+      <h2 class="reveal__title" id="reveal-title">Кадр 01</h2>
+    </div>
+    <p class="reveal__caption" id="reveal-caption"></p>
+
+    <div class="compare" id="reveal-compare"></div>
+    <div class="compare__hint">потяни ползунок — «было / стало»</div>
+
+    <div class="reveal__actions">
+      <button class="btn btn--primary" id="reveal-next">Следующий кадр&nbsp;→</button>
+      <button class="btn" id="reveal-menu">К уровням</button>
+      <button class="btn btn--ghost" id="reveal-gallery">В галерею</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ЛАЙТБОКС ГАЛЕРЕИ ================= -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox__close" id="lightbox-close" title="Закрыть">✕</button>
+  <div class="lightbox__inner">
+    <div class="compare compare--big" id="lightbox-compare"></div>
+    <div class="lightbox__meta">
+      <b id="lightbox-title">Кадр 01</b>
+      <span id="lightbox-caption"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ПРАВИЛА / ПОДТВЕРЖДЕНИЕ ================= -->
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet__card" role="dialog" aria-modal="true">
+    <h2 class="sheet__title" id="sheet-title">Как играть</h2>
+    <div class="sheet__body" id="sheet-body"></div>
+    <div class="sheet__actions" id="sheet-actions"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
